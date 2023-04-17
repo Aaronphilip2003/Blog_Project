@@ -45,6 +45,25 @@ app.delete("/blogs/:id", (req, res) => {
   });
 });
 
+app.post("/auth", (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+
+  db.query(
+    "SELECT * FROM Users WHERE password = ? AND username = ?",
+    [password, username],
+    (err, results) => {
+      if (err) throw err;
+
+      if (results.length > 0) {
+        res.send("Login Successful");
+      } else {
+        res.send("Username and Password not found !");
+      }
+    }
+  );
+});
+
 app.listen(8080, () => {
   console.log("Connected to backend!");
 });
